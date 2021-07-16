@@ -5,7 +5,7 @@
 
 ## About Steam Overlay Hook Proof-Of-Concept (POC)
 Steam Overlay Hook Proof-Of-Concept (POC) is about hooking into Steam Overlay which is the overlay you get when you launch a game with steam.
-Written in C++ so it can be used to make projects. If you have a issue injecting or somethings outdated, please create a issue or pull-request!
+Written in C++ so it can be used to make projects. If you have a issue injecting or somethings outdated, please create a issue or a pull-request!
 
 ## Updating
 If something is outdated or Steam Overlay gets updated (probably never) I will try to update it to latest version.
