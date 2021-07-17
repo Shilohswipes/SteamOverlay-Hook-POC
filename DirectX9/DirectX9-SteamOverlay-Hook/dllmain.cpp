@@ -1,6 +1,7 @@
 #include "includes.h"
 
 Present oPresent = NULL;
+Reset oReset = NULL;
 WNDPROC oWndProc;
 HWND hWnd = NULL;
 
