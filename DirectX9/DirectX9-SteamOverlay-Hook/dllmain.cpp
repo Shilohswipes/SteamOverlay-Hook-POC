@@ -62,6 +62,12 @@ HRESULT STDMETHODCALLTYPE hkPresent(IDirect3DDevice9* pDevice, const RECT* src, 
 	return oPresent(pDevice, src, dest, hWnd, dirtyRegion); // we have to return oPresent or it will not draw anything on the screen!
 }
 
+HRESULT STDMETHODCALLTYPE hkReset(IDirect3DDevice9* pDevice, D3DPRESENT_PARAMETERS* params) {
+	ImGui_ImplDX9_InvalidateDeviceObjects();
+	ImGui_ImplDX9_CreateDeviceObjects();
+	return oReset(pDevice, params);
+}
+
 void STDMETHODCALLTYPE HookThread() {
 	/*Sees if steam module is loaded or not*/
 	if (SteamOverlay::GetSteamModule() == NULL) {
@@ -70,8 +76,11 @@ void STDMETHODCALLTYPE HookThread() {
 	}
 
 	uintptr_t pPresentAddr = SteamOverlay::FindPattern("GameOverlayRenderer.dll", "FF 15 ? ? ? ? 8B F0 85 FF") + 2;
+	uintptr_t pResetAddr = SteamOverlay::FindPattern("GameOverlayRenderer.dll", "C7 45 ? ? ? ? ? FF 15 ? ? ? ? 8B D8") + 8;
 	oPresent = **reinterpret_cast<decltype(&oPresent)*>(pPresentAddr);
+	oReset = **reinterpret_cast<decltype(&oReset)*>(pResetAddr);
 	**reinterpret_cast<void***>(pPresentAddr) = reinterpret_cast<void*>(&hkPresent);
+	**reinterpret_cast<void***>(pResetAddr) = reinterpret_cast<void*>(&hkReset);
 }
 
 BOOL WINAPI DllMain(HMODULE hModule, DWORD dwReason, LPVOID lpReserved) {
