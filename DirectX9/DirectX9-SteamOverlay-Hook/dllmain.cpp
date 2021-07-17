@@ -77,7 +77,7 @@ void STDMETHODCALLTYPE HookThread() {
 	}
 
 	uintptr_t pPresentAddr = SteamOverlay::FindPattern("GameOverlayRenderer.dll", "FF 15 ? ? ? ? 8B F0 85 FF") + 2;
-	uintptr_t pResetAddr = SteamOverlay::FindPattern("GameOverlayRenderer.dll", "C7 45 ? ? ? ? ? FF 15 ? ? ? ? 8B D8") + 8;
+	uintptr_t pResetAddr = SteamOverlay::FindPattern("GameOverlayRenderer.dll", "C7 45 ? ? ? ? ? FF 15 ? ? ? ? 8B D8") + 9;
 	oPresent = **reinterpret_cast<decltype(&oPresent)*>(pPresentAddr);
 	oReset = **reinterpret_cast<decltype(&oReset)*>(pResetAddr);
 	**reinterpret_cast<void***>(pPresentAddr) = reinterpret_cast<void*>(&hkPresent);
