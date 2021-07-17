@@ -10,4 +10,5 @@
 #include "ImGui/imgui_impl_win32.h"
 #include "SteamOverlay.hpp"
 typedef HRESULT(STDMETHODCALLTYPE* Present) (IDirect3DDevice9*, const RECT*, const RECT*, HWND, const RGNDATA*);
+typedef HRESULT(STDMETHODCALLTYPE* Reset) (IDirect3DDevice9*, D3DPRESENT_PARAMETERS*);
 typedef LRESULT(CALLBACK* WNDPROC)(HWND, UINT, WPARAM, LPARAM);
