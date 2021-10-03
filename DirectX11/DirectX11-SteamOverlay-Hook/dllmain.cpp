@@ -16,10 +16,10 @@ LRESULT __stdcall WndProc(const HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lPar
 	return CallWindowProc(oWndProc, hWnd, uMsg, wParam, lParam);
 }
 
-bool ImGuiInit = false;
+bool bImGuiInit = false;
 HRESULT hkPresent(IDXGISwapChain* pSwapchain, UINT SyncInterval, UINT Flags) 
 {
-	if (!ImGuiInit) 
+	if (!bImGuiInit) 
 	{
 		if (SUCCEEDED(pSwapchain->GetDevice(__uuidof(ID3D11Device), reinterpret_cast<void**>(&pDevice)))) 
 		{
@@ -37,7 +37,7 @@ HRESULT hkPresent(IDXGISwapChain* pSwapchain, UINT SyncInterval, UINT Flags)
 			io.ConfigFlags = ImGuiConfigFlags_NoMouseCursorChange;
 			ImGui_ImplWin32_Init(hWnd);
 			ImGui_ImplDX11_Init(pDevice, pContext);
-			ImGuiInit = true;
+			bImGuiInit = true;
 		}
 		else 
 			return oPresent(pSwapchain, SyncInterval, Flags);

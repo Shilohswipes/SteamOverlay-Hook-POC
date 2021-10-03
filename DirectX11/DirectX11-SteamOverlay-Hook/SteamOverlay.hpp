@@ -1,6 +1,7 @@
 #pragma once
 #include <Windows.h>
 #include <Psapi.h>
+#include <cstdint>
 
 namespace SteamOverlay {
 #define InRange(x, a, b) (x >= a && x <= b) 

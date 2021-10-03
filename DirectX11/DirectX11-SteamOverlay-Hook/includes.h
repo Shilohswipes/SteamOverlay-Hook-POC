@@ -1,6 +1,5 @@
 #pragma once
 #include <Windows.h>
-#include <vector>
 #include <d3d11.h>
 #include "SteamOverlay.hpp"
 #include "ImGui/imgui.h"
