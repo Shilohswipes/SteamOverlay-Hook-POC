@@ -1,64 +1,48 @@
 #pragma once
-#include "includes.h"
+#include <Windows.h>
+#include <Psapi.h>
 
 namespace SteamOverlay {
-    uintptr_t FindPattern(uintptr_t pModuleBaseAddress, const char* szSignature, size_t nSelectResultIndex = NULL) {
-        auto PatternToBytes = [](const char* szpattern) {
-            auto       m_iBytes = std::vector<int>{};
-            const auto szStartAddr = const_cast<char*>(szpattern);
-            const auto szEndAddr = const_cast<char*>(szpattern) + strlen(szpattern);
+#define InRange(x, a, b) (x >= a && x <= b) 
+#define GetBits(x) (InRange((x & (~0x20)), 'A', 'F') ? ((x & (~0x20)) - 'A' + 0xA): (InRange(x, '0', '9') ? x - '0': 0))
+#define GetByte(x) (GetBits(x[0]) << 4 | GetBits(x[1]))
 
-            for (auto szCurrentAddr = szStartAddr; szCurrentAddr < szEndAddr; ++szCurrentAddr) {
-                if (*szCurrentAddr == '?') {
-                    ++szCurrentAddr;
-                    if (*szCurrentAddr == '?') ++szCurrentAddr;
-                    m_iBytes.push_back(-1);
-                }
-                else m_iBytes.push_back(strtoul(szCurrentAddr, &szCurrentAddr, 16));
-            }
-            return m_iBytes;
-        };
+	uintptr_t FindPatternEx(const uintptr_t& pStartAddr, const uintptr_t& pEndAddr, const char* szTPattern) {
+		const char* szPattern = szTPattern;
+		uintptr_t pFirstMatch = NULL;
 
-        const auto pDosHeader = (PIMAGE_DOS_HEADER)pModuleBaseAddress;
-        const auto pNTHeaders = (PIMAGE_NT_HEADERS)((std::uint8_t*)pModuleBaseAddress + pDosHeader->e_lfanew);
-        const auto dwSizeOfImage = pNTHeaders->OptionalHeader.SizeOfImage;
-        auto       m_iPatternBytes = PatternToBytes(szSignature);
-        const auto pScanBytes = reinterpret_cast<std::uint8_t*>(pModuleBaseAddress);
-        const auto m_iPatternBytesSize = m_iPatternBytes.size();
-        const auto m_iPatternBytesData = m_iPatternBytes.data();
-        size_t nFoundResults = 0;
+		for (uintptr_t pPosition = pStartAddr; pPosition < pEndAddr; pPosition++) {
+			if (!*szPattern) return pFirstMatch;
+			const uint8_t pCurrentPattern = *reinterpret_cast<const uint8_t*>(szPattern);
+			const uint8_t pCurrentMemory = *reinterpret_cast<const uint8_t*>(pPosition);
 
-        for (auto i = 0ul; i < dwSizeOfImage - m_iPatternBytesSize; ++i) {
-            bool bFound = true;
+			if (pCurrentPattern == '\?' || pCurrentMemory == GetByte(szPattern)) {
+				if (!pFirstMatch) pFirstMatch = pPosition;
+				if (!szPattern[2]) return pFirstMatch;
+				szPattern += pCurrentPattern != '\?' ? 3 : 2;
+			}
+			else {
+				szPattern = szTPattern;
+				pFirstMatch = NULL;
+			}
+		}
+		return NULL;
+	}
 
-            for (auto j = 0ul; j < m_iPatternBytesSize; ++j) {
-                if (pScanBytes[i + j] != m_iPatternBytesData[j] && m_iPatternBytesData[j] != -1) {
-                    bFound = false;
-                    break;
-                }
-            }
-
-            if (bFound) {
-                if (nSelectResultIndex != 0) {
-                    if (nFoundResults < nSelectResultIndex) {
-                        nFoundResults++;
-                        bFound = false;
-                    }
-                    else return reinterpret_cast<uintptr_t>(&pScanBytes[i]);
-                }
-                else return reinterpret_cast<uintptr_t>(&pScanBytes[i]);
-            }
-        }
-        return NULL;
-    }
+	uintptr_t FindPattern(const char* szModule, const char* szPattern) {
+		MODULEINFO hModInfo = { nullptr };
+		if (!GetModuleInformation(GetCurrentProcess(), GetModuleHandleA(szModule), &hModInfo, sizeof(hModInfo))) return NULL;
+		const auto pStartAddr = reinterpret_cast<uintptr_t>(hModInfo.lpBaseOfDll);
+		const uintptr_t pEndAddr = pStartAddr + hModInfo.SizeOfImage;
+		return FindPatternEx(pStartAddr, pEndAddr, szPattern);
+	}
 
     uintptr_t GetSteamModule() {
-        return (uintptr_t)GetModuleHandleA("GameOverlayRenderer64.dll");
+        return reinterpret_cast<uintptr_t>(GetModuleHandleA("GameOverlayRenderer64.dll"));
     }
     
     void CreateHook(__int64 iAddr, __int64 iFunction, __int64* iOriginal) {
-        static uintptr_t pHookAddr;
-        if (!pHookAddr) pHookAddr = FindPattern(GetSteamModule(), ("48 ? ? ? ? 57 48 83 EC 30 33 C0"));
+        uintptr_t pHookAddr = FindPattern("GameOverlayRenderer64.dll", "48 ? ? ? ? 57 48 83 EC 30 33 C0");
         auto hook = ((__int64(__fastcall*)(__int64 addr, __int64 func, __int64* orig, __int64 smthng))(pHookAddr));
         hook((__int64)iAddr, (__int64)iFunction, iOriginal, (__int64)1);
     }
