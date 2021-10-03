@@ -1,9 +1,9 @@
 #include "includes.h"
 
-Present oPresent = NULL;
-Reset oReset = NULL;
+Present oPresent = nullptr;
+Reset oReset = nullptr;
 WNDPROC oWndProc;
-HWND oWnd = NULL;
+HWND oWnd = nullptr;
 
 /* Stolen from https://github.com/rdbo/ImGui-DirectX-9-Kiero-Hook */
 BOOL CALLBACK EnumWindowsCallback(HWND hWnd, LPARAM lParam) 
@@ -20,7 +20,7 @@ BOOL CALLBACK EnumWindowsCallback(HWND hWnd, LPARAM lParam)
 
 HWND GetProcessWindow() 
 {
-	oWnd = NULL;
+	oWnd = nullptr;
 	EnumWindows(EnumWindowsCallback, NULL);
 	return oWnd;
 }

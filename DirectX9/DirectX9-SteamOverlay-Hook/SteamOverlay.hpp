@@ -1,5 +1,7 @@
 #pragma once
-#include "includes.h"
+#include <Windows.h>
+#include <Psapi.h>
+#include <cstdint>
 
 namespace SteamOverlay {
 #define InRange(x, a, b) (x >= a && x <= b) 
@@ -29,7 +31,7 @@ namespace SteamOverlay {
 	}
 
 	uintptr_t FindPattern(const char* szModule, const char* szPattern) {
-		MODULEINFO hModInfo = { NULL };
+		MODULEINFO hModInfo = { nullptr };
 		if (!GetModuleInformation(GetCurrentProcess(), GetModuleHandleA(szModule), &hModInfo, sizeof(hModInfo))) return NULL;
 		const uintptr_t pStartAddr = (uintptr_t)hModInfo.lpBaseOfDll;
 		const uintptr_t pEndAddr = pStartAddr + hModInfo.SizeOfImage;

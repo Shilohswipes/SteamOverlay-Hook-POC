@@ -1,9 +1,5 @@
 #pragma once
 #include <Windows.h>
-#include <cstdint>
-#include <Psapi.h>
-#include <cstdio>
-#include <iostream>
 #include <d3d9.h>
 #include "ImGui/imgui.h"
 #include "ImGui/imgui_impl_dx9.h"
