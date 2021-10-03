@@ -1,15 +1,14 @@
 <p align="center">
 	<img align="center" src="https://upload.wikimedia.org/wikipedia/commons/8/83/Steam_icon_logo.svg" alt="Logo" width="216" height="127">
 </p>
-<p align="center">Steam Overlay Hook Proof-Of-Concept (POC)</p>
+<p align="center">Steam Overlay Hook Proof-Of-Concept</p>
 
 ## About Steam Overlay Hook Proof-Of-Concept (POC)
 Steam Overlay Hook Proof-Of-Concept (POC) is about hooking into Steam Overlay which is the overlay you get when you launch a game with steam.
-Written in C++ so it can be used to make projects. If you have a issue injecting or somethings outdated, please create a issue or a pull-request!
+The project is written in C++ so it can be used to make projects like cheats or mods. If you have a issue injecting or something is outdated, please create a issue or a pull-request that will fix the issue!
 
 ## Updating
-If something is outdated or Steam Overlay gets updated (probably never) I will try to update it to latest version.
-I will update sigs every time if it gets updated!
+If something gets outdated or Steam Overlay gets updated which will probably be never, I will try to update the project as soon as possible.
 
 ### Contributors
 
