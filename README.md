@@ -18,4 +18,4 @@ I will update sigs every time if it gets updated!
 | Zanelul  | Creator of the project/maintainer |
 | SNO | Gave idea to make this and post it on github |
 | [aixxe](https://github.com/aixxe) | Gave a good understanding on steam overlay hooking. [Website](https://aixxe.net/2017/09/steam-overlay-rendering) |
-| [Xenia/Dissarray](https://github.com/Xenia0) | Original hook method from DirectX11 hook |
+| [Xenia/Dissarray](https://github.com/Xenia0) | Original hook method for DirectX11 hook |
