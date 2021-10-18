@@ -74,7 +74,7 @@ HRESULT STDMETHODCALLTYPE hkReset(IDirect3DDevice9* pDevice, D3DPRESENT_PARAMETE
 	return oReset(pDevice, params);
 }
 
-void __stdcall HookThread() {
+DWORD WINAPI HookThread() {
 	if (SteamOverlay::GetSteamModule() == NULL) 
 	{
 		MessageBoxA(GetForegroundWindow(), "\"GameOverlayRenderer.dll\" is not loaded!", "SteamOverlay Error", MB_OK | MB_ICONERROR);
