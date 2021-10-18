@@ -58,7 +58,7 @@ HRESULT hkPresent(IDXGISwapChain* pSwapchain, UINT SyncInterval, UINT Flags)
 	return oPresent(pSwapchain, SyncInterval, Flags);
 }
 
-void __stdcall HookThread() 
+DWORD WINAPI HookThread() 
 {
 	if (SteamOverlay::GetSteamModule() == NULL) {
 		MessageBoxA(nullptr, "\"GameOverlayRenderer64.dll\" is not loaded!", "SteamOverlay Error", MB_OK | MB_ICONERROR);
