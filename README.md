@@ -14,7 +14,7 @@ If something gets outdated or Steam Overlay gets updated which will probably be 
 
 | Contributor | Helped with |
 | ----------- | ----------- |
-| Zanelul  | Creator of the project/maintainer |
+| Creo | Creator of the project/maintainer |
 | SNO | Gave idea to make this and post it on github |
 | [aixxe](https://github.com/aixxe) | Gave a good understanding on steam overlay hooking. [Website](https://aixxe.net/2017/09/steam-overlay-rendering) |
 | [Xenia/Dissarray](https://github.com/Xenia0) | Original hook method for DirectX11 hook |
